@@ -67,6 +67,9 @@ void data_generation(bool save=true, bool load=false)
 	}
 }
 
+// 动态规划过程 
+// 原本用L[i][j]表示串V的前i个字符和串W的前j个字符之间最小的编辑距离
+// 现在这里又滚动数组的意思 现在一维的L表示原来的L[i-1]，而S表示L[i]， 
 vector<int> row(vector<int>&L, char& a, string& str)
 {
 	vector<int> S;
@@ -88,6 +91,7 @@ void gen(string& p_mer, int i, vector<int> L, string& V, int& seqnum, int& posit
 //		else
 //		{
 			// 外面那圈else似乎没有意义 
+			
 			if(*min_element(Li.begin(), Li.end()) <= d)
 			    gen(p_mer, i+1, Li, V, seqnum, position);
 //		},
@@ -131,8 +135,10 @@ void r_mer_generation()
 
 void do_dms()
 {
+	// 按照前两项对r_mer进行排序 
 	sort(r_mer.begin(), r_mer.end(), [](const Rmer&a, const Rmer&b) {if(a.str<b.str) return true; else if(a.str==b.str&&a.seq_number<b.seq_number) return true; else return false;});
 	auto it=r_mer.begin();
+	// 删除前两项重复的r_mer，因为对于一个r_mer只需要记录它在某条序列里出现过就可以了 
 	while(it != r_mer.end())
 	{
 		auto left=it+1, right=it+1;
@@ -140,11 +146,15 @@ void do_dms()
 		    right++;
 		it = r_mer.erase(left, right);
 	}
+	// 合并r_mer和所以p_mer的d_neighbor 
 	r_mer.insert(r_mer.end(), p_nbr.begin(), p_nbr.end());
+	// 合并后按照第一个和最后一个关键字进行排序 
 	sort(r_mer.begin(), r_mer.end(), [](const Rmer&a, const Rmer&b) {if(a.str<b.str) return true; else if(a.str==b.str&&a.type<b.type) return true; else return false;});
 	A.resize(num+1);
 	for(int i=0; i<A.size(); i++)
 	    A[i].resize(length);
+	// 计算过程
+	// A[i][j][k]=1表示序列编号i的序列中起始位置为j的p_mer在序列编号为k的序列中存在一个d_neighbor 
 	for(int i=0; i<r_mer.size(); )
 	{
 		int j=i, sep=-1;
@@ -166,7 +176,10 @@ void do_dms()
 		}      
 		i = j;
 	}
+	// 找到的模体存储在q_mer.txt中，也跟代码在同一目录下
+	// 输出的一行表示一个q_mer，一行两个数字，分别表示序列编号和起始位置 
 	fstream fout("q_mer.txt", ios::out);
+	// 如果对于一个p_mer在每条序列中都能找到它的d_neighbor，则为一个模体 
 	for(int i=0; i<A.size(); i++)
 	    for(int j=0; j<A[i].size(); j++)
 	        if(A[i][j].count() == num)
