@@ -91,7 +91,7 @@ void gen(string& p_mer, int i, vector<int> L, string& V, int& seqnum, int& posit
 //		else
 //		{
 			// 外面那圈else似乎没有意义 
-			
+			// 这里跟伪代码不太一样，我觉得这里只要满足存在一个L中的元素小于d就可以继续搜索 
 			if(*min_element(Li.begin(), Li.end()) <= d)
 			    gen(p_mer, i+1, Li, V, seqnum, position);
 //		},
