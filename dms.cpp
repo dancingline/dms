@@ -50,6 +50,7 @@ void data_generation(bool save=true, bool load=false)
 	}
 	else
 	{
+		srand(time(NULL)); 
 		for(int i=0; i<num; i++)
 		{
 			str = "";
@@ -69,7 +70,7 @@ void data_generation(bool save=true, bool load=false)
 
 // 动态规划过程 
 // 原本用L[i][j]表示串V的前i个字符和串W的前j个字符之间最小的编辑距离
-// 现在这里又滚动数组的意思 现在一维的L表示原来的L[i-1]，而S表示L[i]， 
+// 现在这里有点滚动数组的意思 现在一维的L表示原来的L[i-1]，而S表示L[i]， 
 vector<int> row(vector<int>&L, char& a, string& str)
 {
 	vector<int> S;
