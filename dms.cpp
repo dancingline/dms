@@ -50,7 +50,7 @@ void data_generation(bool save=true, bool load=false)
 	}
 	else
 	{
-		srand(time(NULL)); 
+		//srand(time(NULL)); 
 		for(int i=0; i<num; i++)
 		{
 			str = "";
@@ -177,9 +177,9 @@ void do_dms()
 		}      
 		i = j;
 	}
-	// 找到的模体存储在q_mer.txt中，也跟代码在同一目录下
-	// 输出的一行表示一个q_mer，一行两个数字，分别表示序列编号和起始位置 
-	fstream fout("q_mer.txt", ios::out);
+	// 找到的模体存储在p_mer.txt中，也跟代码在同一目录下
+	// 输出的一行表示一个p_mer，一行两个数字，分别表示序列编号和起始位置 
+	fstream fout("p_mer.txt", ios::out);
 	// 如果对于一个p_mer在每条序列中都能找到它的d_neighbor，则为一个模体 
 	for(int i=0; i<A.size(); i++)
 	    for(int j=0; j<A[i].size(); j++)
